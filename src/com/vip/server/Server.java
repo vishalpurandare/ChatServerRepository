@@ -3,8 +3,11 @@
  */
 package com.vip.server;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -92,6 +95,25 @@ public class Server {
 				}
 			}
 			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void welcomeUser(Socket socket) {
+		BufferedReader br = null;
+		try {
+			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+			DataInputStream in = new DataInputStream(socket.getInputStream());
+			
+			out.writeUTF("Welcome, to ViP Chat Server!");
+			out.writeUTF("Enter Your Name: ");
+			
+			br = new BufferedReader(new InputStreamReader(in));
+			String userName = br.readLine(); //dataIn.readUTF();
+			
+			Thread.currentThread().setName(userName);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
